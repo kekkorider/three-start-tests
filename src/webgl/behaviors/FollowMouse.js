@@ -69,7 +69,7 @@ export class FollowMouse extends Object3DBehaviour {
           x: pos.x,
           y: pos.y,
           z: pos.z,
-          duration: 0.3,
+          duration: 0.4,
           ease: 'power2.out',
         })
       },
