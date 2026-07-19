@@ -9,6 +9,18 @@ export class FollowMouse extends Object3DBehaviour {
   mouse = null
   canvasSize = new THREE.Vector2()
 
+  invertX = false
+  invertY = false
+  scale = 2
+
+  constructor(scale = 1, invertX = false, invertY = false) {
+    super()
+
+    this.scale = scale
+    this.invertX = invertX
+    this.invertY = invertY
+  }
+
   onAwake() {
     this.createMouse()
 
@@ -36,6 +48,16 @@ export class FollowMouse extends Object3DBehaviour {
         // REF: https://stackoverflow.com/a/36071100
         this.ndc.setComponent(0, (event.x / this.canvasSize.x) * 2 - 1)
         this.ndc.setComponent(1, -(event.y / this.canvasSize.y) * 2 + 1)
+
+        if (this.invertX) {
+          this.ndc.setComponent(0, -this.ndc.x)
+        }
+
+        if (this.invertY) {
+          this.ndc.setComponent(1, -this.ndc.y)
+        }
+
+        this.ndc.multiplyScalar(this.scale)
 
         this.ndc.unproject(this.ctx.camera)
 
