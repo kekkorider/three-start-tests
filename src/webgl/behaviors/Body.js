@@ -1,5 +1,5 @@
 import { Object3DBehaviour } from 'three-start'
-import { MotionType } from 'crashcat'
+import { MotionType, rigidBody } from 'crashcat'
 
 export class Body extends Object3DBehaviour {
   motionType = MotionType.STATIC
@@ -38,7 +38,18 @@ export class Body extends Object3DBehaviour {
     )
   }
 
-  createBody() {}
+  createBody() {
+    this.body = rigidBody.create(this.ctx.modules.physics.world, {
+      motionType: this.motionType,
+      shape: this.shape,
+      position: this.object.position.clone().toArray(),
+      quaternion: this.object.quaternion.clone().toArray(),
+      restitution: 0.5,
+      objectLayer: this.objectLayer,
+    })
+
+    this.object.userData.bodyId = this.body.id
+  }
 
   createShape() {}
 }

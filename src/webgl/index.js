@@ -4,7 +4,6 @@ import { MotionType } from 'crashcat'
 
 import { gsap, Observer } from '../assets/js/gsap'
 
-// import { cube } from './components/Cube'
 import { normalMaterial } from './materials/normal'
 
 import { floor } from './components/Floor'
@@ -12,6 +11,7 @@ import { floor } from './components/Floor'
 import { Spin } from './behaviors/Spin'
 import { FollowMouse } from './behaviors/FollowMouse'
 import { BodyBox } from './behaviors/BodyBox'
+import { BodySphere } from './behaviors/BodySphere'
 
 import { PhysicsModule } from './modules/Physics'
 
@@ -42,35 +42,31 @@ function createCube() {
   scene.add(cube)
 }
 
+function createSphere() {
+  const radius = gsap.utils.random(0.1, 0.4)
+
+  const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 32), normalMaterial)
+  sphere.position.x = gsap.utils.random(-2, 2)
+  sphere.position.y = gsap.utils.random(1, 2)
+  sphere.position.z = gsap.utils.random(-0.5, 0.5)
+
+  addComponent(sphere, BodySphere, MotionType.DYNAMIC)
+  scene.add(sphere)
+}
+
+const actions = [
+  createCube,
+  createSphere,
+]
+
 Observer.create({
   type: 'pointer',
   target: starter.ctx.canvasContainer,
   onClick: () => {
-    createCube()
+    gsap.utils.random(actions)()
   }
 })
 
-// const cube = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.6, 0.3), normalMaterial)
-// cube.rotation.y = 0.3
-// cube.rotation.z = 0.3
-// cube.position.y = 0.5
-// addComponent(cube, BodyBox, MotionType.DYNAMIC)
-// addComponent(cube, Spin, 'x', 1)
-// addComponent(cube, Spin, 'z', 0.6)
-// addComponent(cube, FollowMouse, 1, false, false)
-
-// const icosahedron = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5, 0), normalMaterial)
-// addComponent(icosahedron, Spin, 'y', 0.3)
-// addComponent(icosahedron, FollowMouse, 0.5, false, true)
-
-// const octahedron = new THREE.Mesh(new THREE.OctahedronGeometry(0.35, 0), normalMaterial)
-// addComponent(octahedron, Spin, 'x', 0.5)
-// addComponent(octahedron, Spin, 'y', 0.7)
-// addComponent(octahedron, FollowMouse, 0.15, true, false)
-
 floor.position.y = -2
 
-// scene.add(cube)
-// scene.add(icosahedron)
-// scene.add(octahedron)
 scene.add(floor)
