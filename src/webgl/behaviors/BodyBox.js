@@ -1,18 +1,25 @@
 import { rigidBody, MotionType, box } from "crashcat"
-import { Object3DBehaviour } from "three-start"
+import { Body } from './Body'
 
-export class BodyBox extends Object3DBehaviour {
-  constructor(motionType = MotionType.STATIC) {
-    super()
-
-    this.motionType = motionType
+export class BodyBox extends Body {
+  onAwake() {
+    super.onAwake()
   }
 
-  onAwake() {
-    const layer = this.motionType === MotionType.STATIC ?
-                          this.ctx.modules.physics.OBJECT_LAYER_NOT_MOVING :
-                          this.ctx.modules.physics.OBJECT_LAYER_MOVING
+  createBody() {
+    this.body = rigidBody.create(this.ctx.modules.physics.world, {
+      motionType: this.motionType,
+      shape: this.shape,
+      position: this.object.position.clone().toArray(),
+      quaternion: this.object.quaternion.clone().toArray(),
+      restitution: 0.5,
+      objectLayer: this.objectLayer,
+    })
 
+    this.object.userData.bodyId = this.body.id
+  }
+
+  createShape() {
     const { width, height, depth } = this.object.geometry.parameters
     const bodyBias = 0.005
 
@@ -20,34 +27,6 @@ export class BodyBox extends Object3DBehaviour {
     const y = height / 2 + bodyBias
     const z = depth / 2 + bodyBias
 
-    this.body = rigidBody.create(this.ctx.modules.physics.world, {
-      motionType: this.motionType,
-      shape: box.create({ halfExtents: [x, y, z] }),
-      position: this.object.position.clone().toArray(),
-      quaternion: this.object.quaternion.clone().toArray(),
-      restitution: 0.5,
-      objectLayer: layer,
-    })
-
-    this.object.userData.bodyId = this.body.id
+    this.shape = box.create({ halfExtents: [x, y, z] })
   }
-
-  onUpdate() {
-    if (this.motionType === MotionType.STATIC) return
-
-    this.object.position.set(
-      this.body.position[0],
-      this.body.position[1],
-      this.body.position[2],
-    )
-
-    this.object.quaternion.set(
-      this.body.quaternion[0],
-      this.body.quaternion[1],
-      this.body.quaternion[2],
-      this.body.quaternion[3],
-    )
-  }
-
-  createShape() {}
 }
