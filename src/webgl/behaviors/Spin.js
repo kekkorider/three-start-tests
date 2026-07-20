@@ -11,10 +11,6 @@ export class Spin extends Object3DBehaviour {
     this.speed = speed
   }
 
-  onAwake() {
-    console.log('Spin onAwake')
-  }
-
   onUpdate() {
     this.object.rotation[this.axis] += this.speed * this.ctx.getDeltaTime()
   }
