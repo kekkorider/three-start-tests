@@ -28,6 +28,8 @@ export class BodyBox extends Object3DBehaviour {
       restitution: 0.5,
       objectLayer: layer,
     })
+
+    this.object.userData.bodyId = this.body.id
   }
 
   onUpdate() {
