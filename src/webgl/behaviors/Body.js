@@ -1,4 +1,4 @@
-import { Object3DBehaviour } from 'three-start'
+import { Object3DBehaviour, destroy } from 'three-start'
 import { MotionType, rigidBody } from 'crashcat'
 
 export class Body extends Object3DBehaviour {
@@ -21,6 +21,15 @@ export class Body extends Object3DBehaviour {
     this.createBody()
   }
 
+  onDestroy() {
+    rigidBody.remove(this.ctx.modules.physics.world, this.body)
+
+    const { geometry } = this.object
+
+    geometry?.dispose()
+    this.object.removeFromParent()
+  }
+
   onUpdate() {
     if (this.motionType === MotionType.STATIC) return
 
@@ -36,6 +45,10 @@ export class Body extends Object3DBehaviour {
       this.body.quaternion[2],
       this.body.quaternion[3],
     )
+
+    if (this.body.position[0] < -5) {
+      destroy(this)
+    }
   }
 
   createBody() {
