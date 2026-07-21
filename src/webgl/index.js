@@ -15,6 +15,18 @@ import { BodySphere } from './behaviors/BodySphere'
 
 import { PhysicsModule } from './modules/Physics'
 
+import { createMaze } from '../maze'
+
+const maze = createMaze({
+  width: 10,
+  height: 10,
+  cellShape: 'square',
+  algorithm: 'recursiveBacktrack',
+  seed: 42,
+})
+
+console.log(maze)
+
 const starter = new ThreeStart()
 starter.addModules({
   physics: new PhysicsModule()
