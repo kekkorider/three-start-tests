@@ -47,8 +47,6 @@ export class Body extends Object3DBehaviour {
       restitution: 0.5,
       objectLayer: this.objectLayer,
     })
-
-    this.object.userData.bodyId = this.body.id
   }
 
   createShape() {}

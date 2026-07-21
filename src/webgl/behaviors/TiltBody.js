@@ -1,6 +1,8 @@
 import { Vector2, Vector3, Quaternion } from 'three'
-import { Object3DBehaviour } from 'three-start'
+import { Object3DBehaviour, getComponent } from 'three-start'
+
 import { Observer } from '../../assets/js/gsap'
+import { Body } from './Body'
 
 export class TiltBody extends Object3DBehaviour {
   body = null
@@ -13,7 +15,8 @@ export class TiltBody extends Object3DBehaviour {
   }
 
   onAwake() {
-    this.body = this.ctx.modules.physics.world.bodies.pool.find(body => body.id === this.object.userData.bodyId)
+    this.body = getComponent(this.object, Body).body
+
     this.createTilt()
   }
 
