@@ -46,9 +46,9 @@ export class Body extends Object3DBehaviour {
       this.body.quaternion[3],
     )
 
-    if (this.body.position[0] < -5) {
-      destroy(this)
-    }
+    // if (this.body.position[1] < -5) {
+    //   destroy(this)
+    // }
   }
 
   createBody() {
