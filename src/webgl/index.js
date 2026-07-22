@@ -14,6 +14,7 @@ import { TiltBody } from './behaviors/TiltBody'
 import { FollowMouse } from './behaviors/FollowMouse'
 import { BodyBox } from './behaviors/BodyBox'
 import { BodySphere } from './behaviors/BodySphere'
+import { BodyCylinder } from './behaviors/BodyCylinder'
 import { BodyTriangle } from './behaviors/BodyTriangle'
 
 import { PhysicsModule } from './modules/Physics'
@@ -26,8 +27,8 @@ starter.addModules({
 })
 const { scene, camera, renderer, modules } = starter.ctx
 
-camera.position.y = 0.5
-camera.position.z = 1.3
+camera.position.y = 4
+camera.position.z = 6
 
 starter.start()
 starter.mount(document.getElementById('app'))
@@ -40,6 +41,8 @@ models[0].scene.traverse(child => {
   }
 })
 scene.add(models[0].scene)
+addComponent(models[0].scene.children[0], BodyCylinder, MotionType.KINEMATIC)
+addComponent(models[0].scene.children[0], TiltBody)
 addComponent(models[0].scene.children[1], BodyTriangle, MotionType.KINEMATIC)
 addComponent(models[0].scene.children[1], TiltBody)
 
@@ -62,12 +65,12 @@ function createCube() {
 }
 
 function createSphere() {
-  const radius = gsap.utils.random(0.03, 0.08)
+  const radius = gsap.utils.random(0.08, 0.1)
 
   const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 32), normalMaterial)
-  sphere.position.x = gsap.utils.random(-0.5, 0.5)
-  sphere.position.y = gsap.utils.random(0.1, 0.15)
-  sphere.position.z = gsap.utils.random(-0.3, 0.3)
+  sphere.position.x = gsap.utils.random(-3, 3)
+  sphere.position.y = gsap.utils.random(1, 2)
+  sphere.position.z = gsap.utils.random(-2.5, 2.5)
 
   addComponent(sphere, BodySphere, MotionType.DYNAMIC)
   scene.add(sphere)
@@ -82,8 +85,8 @@ Observer.create({
   type: 'pointer',
   target: starter.ctx.canvasContainer,
   onClick: () => {
-    // return
-    gsap.utils.random(actions)()
+    // gsap.utils.random(actions)()
+    createSphere()
   }
 })
 

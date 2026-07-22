@@ -5,6 +5,7 @@ export class Body extends Object3DBehaviour {
   motionType = MotionType.STATIC
   objectLayer = null
   body = null
+  bodyBias = 0.005
   shape = null
 
   constructor(motionType = MotionType.STATIC) {
@@ -57,7 +58,7 @@ export class Body extends Object3DBehaviour {
       shape: this.shape,
       position: this.object.position.clone().toArray(),
       quaternion: this.object.quaternion.clone().toArray(),
-      restitution: 0.5,
+      restitution: 0.2,
       objectLayer: this.objectLayer,
     })
   }

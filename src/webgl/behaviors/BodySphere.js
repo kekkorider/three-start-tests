@@ -5,6 +5,6 @@ export class BodySphere extends Body {
   createShape() {
     const { radius } = this.object.geometry.parameters
 
-    this.shape = sphere.create({ radius })
+    this.shape = sphere.create({ radius: radius + this.bodyBias })
   }
 }
