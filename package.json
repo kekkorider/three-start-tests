@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "pnpm copy:draco && vite",
+    "build": "pnpm copy:draco && vite build",
+    "preview": "vite preview",
+    "copy:draco": "node scripts/copyDracoFiles.js"
   },
   "devDependencies": {
     "vite": "^8.1.1"
