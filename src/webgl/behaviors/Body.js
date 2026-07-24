@@ -5,7 +5,7 @@ export class Body extends Object3DBehaviour {
   motionType = MotionType.STATIC
   objectLayer = null
   body = null
-  bodyBias = 0.005
+  bodyBias = 0.01
   shape = null
 
   constructor(motionType = MotionType.STATIC) {

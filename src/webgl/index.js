@@ -27,8 +27,8 @@ starter.addModules({
 })
 const { scene, camera, renderer, modules } = starter.ctx
 
-camera.position.y = 4
-camera.position.z = 6
+camera.position.y = 7
+camera.position.z = 5
 
 starter.start()
 starter.mount(document.getElementById('app'))
@@ -36,27 +36,32 @@ starter.mount(document.getElementById('app'))
 const models = await modules.assetLoader.loadModels(['/mazes.glb'])
 models[0].scene.name = 'Maze'
 models[0].scene.traverse(child => {
+  console.log(child)
   if (child.isMesh) {
     child.material = normalMaterial
+  }
+
+  if (child.name.endsWith('_Body')) {
+    child.visible = false
   }
 })
 scene.add(models[0].scene)
 addComponent(models[0].scene.children[0], BodyCylinder, MotionType.KINEMATIC)
 addComponent(models[0].scene.children[0], TiltBody)
-addComponent(models[0].scene.children[1], BodyTriangle, MotionType.KINEMATIC)
+addComponent(models[0].scene.children[1], BodyTriangle, MotionType.KINEMATIC, models[0].scene.getObjectByName('Wall_Body').geometry)
 addComponent(models[0].scene.children[1], TiltBody)
 
 const controls = new OrbitControls(camera, renderer.domElement)
 
 function createCube() {
-  const w = gsap.utils.random(0.03, 0.08)
-  const h = gsap.utils.random(0.03, 0.08)
-  const d = gsap.utils.random(0.03, 0.08)
+  const w = gsap.utils.random(0.2, 0.35)
+  const h = gsap.utils.random(0.2, 0.35)
+  const d = gsap.utils.random(0.2, 0.35)
 
   const cube = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), normalMaterial)
-  cube.position.x = gsap.utils.random(-0.5, 0.5)
-  cube.position.y = gsap.utils.random(0.1, 0.15)
-  cube.position.z = gsap.utils.random(-0.3, 0.3)
+  cube.position.x = gsap.utils.random(-3, 3)
+  cube.position.y = gsap.utils.random(1, 2)
+  cube.position.z = gsap.utils.random(-2.5, 2.5)
   cube.rotation.y = gsap.utils.random(0, Math.PI * 2)
   cube.rotation.z = gsap.utils.random(0, Math.PI * 2)
 
@@ -65,7 +70,7 @@ function createCube() {
 }
 
 function createSphere() {
-  const radius = gsap.utils.random(0.08, 0.1)
+  const radius = gsap.utils.random(0.12, 0.15)
 
   const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 32), normalMaterial)
   sphere.position.x = gsap.utils.random(-3, 3)
@@ -85,8 +90,8 @@ Observer.create({
   type: 'pointer',
   target: starter.ctx.canvasContainer,
   onClick: () => {
-    // gsap.utils.random(actions)()
-    createSphere()
+    gsap.utils.random(actions)()
+    // createSphere()
   }
 })
 
